@@ -14,8 +14,8 @@ difference()
 	translate([-length/2, -totalwidth/2,0])cube([length, totalwidth, height]);
 	translate([-length/2-2,middlewall_thickness/2, bottom_thickness])cube([length + 4, doorwidth, height]);
 	translate([-length/2-2,-doorwidth - middlewall_thickness/2, bottom_thickness])cube([length + 4, doorwidth, height]);
-	translate([16,18,screw_bottom_thickness])screwhole();
-	translate([-16,-18, screw_bottom_thickness])screwhole();
+	translate([18.5,16,screw_bottom_thickness])screwhole();
+	translate([-18.5,-16, screw_bottom_thickness])screwhole();
 }
 
 
