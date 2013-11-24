@@ -1,7 +1,7 @@
 $fn=60;
 height = 33;
 length = 60;
-doorwidth= 35;
+doorwidth= 38;
 wall_thickness = 5;
 middlewall_thickness = 3.5;
 bottom_thickness = 8;
@@ -19,7 +19,7 @@ difference()
 		rotate([0,-15,0])
 			cube([40,totalwidth+2,50]);
 	translate([0,0,-1])
-	# rotate([0,0,180])
+	 rotate([0,0,180])
 	translate([length/2,-totalwidth/2-1,0])
 		rotate([0,-15,0])
 			cube([40,totalwidth+2,50]);
