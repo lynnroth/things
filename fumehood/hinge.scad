@@ -11,24 +11,60 @@
 // barreldiameter = barrelradius * 2;
 
 
+// $fn = 50;
+// width = 20;
+// length = 30;
+// thickness = 3;
+// pinradius = 1;
+// barrelthickness = 1;
+// barrelsections = 4;
+// barrelspacing = .1;
+// barrellength = (length / barrelsections) - barrelspacing;
+// barrelradius = pinradius+barrelthickness;
+// barreldiameter = barrelradius * 2;
+
+
 $fn = 50;
 width = 20;
 length = 30;
-thickness = 3;
-pinradius = 1;
-barrelthickness = 1;
+thickness = 4;
+pinradius = 1.2;
+barrelthickness = 2;
 barrelsections = 4;
 barrelspacing = .1;
 barrellength = (length / barrelsections) - barrelspacing;
 barrelradius = pinradius+barrelthickness;
 barreldiameter = barrelradius * 2;
 
-screwradius = 2;
+
+
+screwradius = 2.6;
+printedpin = 0;
+pinhead = 2;
+
 
 hinge_side(width, length, thickness);
 hinge_side(width, length, thickness, 1);
+
+if (printedpin == 1)
+{
+	pin();
+}
  
- 
+ module pin()
+ {
+	rotate([270,0,0])
+	{
+		cylinder(h=length + pinhead, r=pinradius-.3);
+		for(i=[0:length/4])
+		{
+			translate([0,pinradius-.3,i*4])
+			#cube([.3,.3,1]);
+		}
+		translate([0,0,length+.2])
+		cylinder(h=pinhead, r=pinradius + barrelthickness);
+	}
+ }
  
 module hinge_side(width, length, thickness, mirrorx=0)
 {
@@ -48,10 +84,10 @@ module hinge_side(width, length, thickness, mirrorx=0)
 						cube([width, length, thickness]);
 						
 						translate([width/2,5,-1])
-						cylinder(h=thickness + 2, r1 = screwradius);
+						cylinder(h=thickness + 2, r = screwradius);
 						
 						translate([width/2,length-5,-1])
-						cylinder(h=thickness + 2, r1 = screwradius);
+						cylinder(h=thickness + 2, r = screwradius);
 						
 						
 						translate([0,(barrellength + barrelspacing /2) ,0])
@@ -70,8 +106,8 @@ module hinge_side(width, length, thickness, mirrorx=0)
 
 module barrelcutout()
 {
-	translate([0,0,-.5])
-	cube([1, barrellength + barrelspacing + barrelspacing, 10]);
+	translate([-.1,0,-.5])
+	cube([1.1, barrellength + barrelspacing + barrelspacing, 10]);
 }
 
 module barrel()
@@ -84,14 +120,17 @@ module barrel()
 			cylinder(h=barrellength, r=pinradius+barrelthickness);
 			translate([0,0,-1])cylinder(h=barrellength + 2, r=pinradius);
 		}
-		translate([pinradius,0,pinradius])
-		rotate([0,90,0])	
+	}
+	translate([0,0, 0])
+	{
+		translate([pinradius,0,0])
+		rotate([0,0,0])	
 		{
-			cube([3,barrellength,thickness]);
+			#cube([barrellength,barrellength,thickness]);
 		}
 		//translate([pinradius,0,pinradius])
 	}
-	cube([pinradius,barrellength,pinradius]);	
+	#cube([pinradius*3,barrellength,barrelthickness]);	
 
 }
 
