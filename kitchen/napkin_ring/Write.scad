@@ -164,8 +164,8 @@ module writecircle(text,where,radius){
 			}
 		}		
 	}
-
 }
+
 module writethecylinder(text,where,radius,height,r1,r2){
 	wid=(.125* h *5.5 * space);
 	widall=wid*(len(text)-1)/2; 
@@ -175,7 +175,7 @@ module writethecylinder(text,where,radius,height,r1,r2){
 
 	function mmangle(radius)=(widall/(pi2*radius)*360);
 			translate([0,0,up-down])
-			rotate(east-west,[0,0,1])
+			rotate(east-west,[0,0,1]) 
 			for (r=[0:len(text)-1]){
 				rotate(-90+(r*NAngle(radius)),[0,0,1])
 				translate([radius,0,-r*((rotate)/90*wid)+(len(text)-1)/2*((rotate)/90*wid)])

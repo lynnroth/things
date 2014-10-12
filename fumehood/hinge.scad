@@ -26,12 +26,12 @@
 
 $fn = 50;
 width = 20;
-length = 30;
+length = 34;
 thickness = 4;
 pinradius = 1.2;
 barrelthickness = 2;
 barrelsections = 4;
-barrelspacing = .1;
+barrelspacing = .3;
 barrellength = (length / barrelsections) - barrelspacing;
 barrelradius = pinradius+barrelthickness;
 barreldiameter = barrelradius * 2;
@@ -44,6 +44,7 @@ pinhead = 2;
 
 
 hinge_side(width, length, thickness);
+translate([-10,0,0])
 hinge_side(width, length, thickness, 1);
 
 if (printedpin == 1)
