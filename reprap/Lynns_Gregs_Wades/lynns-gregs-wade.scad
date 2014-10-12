@@ -22,9 +22,9 @@
 // The beveled guide inside the idler was moved outward a little, because it's too tight
 // The cutout for the 20mm idler bolt (M8) was increased in radius to M8/2.
 
-include<configuration.scad>
-include<functions.scad>
-
+include<inc/configuration.scad>
+include<inc/functions.scad>
+   
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Define the hotend_mounting style you want by specifying hotend_mount=style1+style2 etc.
 //e.g. wade(hotend_mount=groovemount+peek_reprapsource_mount);
@@ -48,7 +48,7 @@ default_extruder_mount=256;
 
 mounting_holes_legacy=1;
 mounting_holes_symmetrical=2;
-default_mounting_holes=mounting_holes_symmetrical;
+default_mounting_holes=mounting_holes_legacy;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -144,7 +144,8 @@ wade_block_depth=28;
 block_bevel_r=6;
 
 base_thickness=10;
-base_length=70+2-6;
+//LAR - Change base length
+base_length = 40; //70+2-6;
 base_leadout=22-10; // mrice
 base_extra_depth=2.5; // mrice
 
@@ -230,7 +231,7 @@ module wade(
 	hotend_mount=default_extruder_mount,
 	mounting_holes=default_mounting_holes)
 {
-			fulcrum_support();
+	fulcrum_support();
 	difference ()
 	{
 		union()
@@ -287,7 +288,8 @@ module wade(
 
 			//The base.
 			translate([-base_leadout,-base_thickness/2,0])
-			cube([base_length,base_thickness,wade_block_depth+base_extra_depth]);
+			//LAR - Lengthen base by 1
+			cube([base_length+1,base_thickness,wade_block_depth+base_extra_depth]);
 			//Base aligement helper
 			//translate([-base_leadout,-base_thickness/2,wade_block_depth+base_extra_depth])
 			//cube([base_length,1,layer_thickness]);
@@ -336,6 +338,8 @@ function in_mask(mask,value)=(mask%(value*2))>(value-1);
 module block_holes(mounting_holes=default_mounting_holes)
 {
 echo("bhmh", mounting_holes)
+	
+	
 	//Round off the top of the block. 
 	translate([0,wade_block_height-block_bevel_r,-1])
 	render()
@@ -347,7 +351,8 @@ echo("bhmh", mounting_holes)
 		cylinder(r=block_bevel_r,h=wade_block_depth+2,$fn=40);
 	}
 
-	//carriage mountig holes
+	//carriage mounting holes
+	//LAR - Adjusted to 24mm mount (-25 and 1)
 	translate([-48.5+64+4,1,3]) {
 		translate([-25,0,0]) { //-46
 			translate([0,0,layer_thickness+24]) 
@@ -355,7 +360,7 @@ echo("bhmh", mounting_holes)
 			cylinder(r=m3_nut_diameter/2+0.5, h=20, center=true,$fn=20);
 		}
 		
-		translate([5,0,0]) { //-22
+		translate([1,0,0]) { //-22
 			translate([0,0,layer_thickness+24]) 
 			  cylinder(r=m3_diameter/2, h=wade_block_depth+0.2+base_extra_depth, center=true,$fn=20);
 			cylinder(r=m3_nut_diameter/2+0.5, h=20, center=true,$fn=20);
@@ -394,7 +399,9 @@ echo("bhmh", mounting_holes)
 			translate([0,0,20])
 			b608(h=9);
 		
-			translate([-13,0,9.5])
+			//LAR - Extend support for filamanet up to the hobbed bolt.
+			//translate([-13,0,9.5])
+			translate([-15,0,9.5])
 			b608(h=wade_block_depth);
 		
 			translate([0,0,8+layer_thickness])
@@ -477,17 +484,11 @@ module motor_mount()
 		barbell(block_top_right-[0,5],motor_hole(1),5,nema17_support_d/2,100,60);
 
 		//Connect motor mount to base.
+		//LAR - change y of this to 20 from 0
 		barbell([base_length-base_leadout,
-			0],motor_hole(3),base_thickness/2,
+			20],motor_hole(3),base_thickness/2,
 			nema17_support_d/2,100,60);
 	}
-
-    // - mrice
-    // Add a OSH logo in the space under the motor mount.
-    // -
-    translate([44,24,0])
-        linear_extrude(height=motor_mount_thickness/2)
-           oshw_logo_2d(24);
 
 }
 
@@ -534,8 +535,10 @@ module motor_mount_holes()
 
 module wadeidler() 
 {
+
 	guide_height=12.3;
-	guide_length=10;
+	//LAR - longer guide.
+	guide_length=16;
 
    union()
    {
@@ -559,7 +562,8 @@ module wadeidler()
 			
 			//Filament Guide.
 			translate([guide_height/2+idler_height/2-1,idler_long_side/2-guide_length/2,0])
-			cube([guide_height+1,guide_length,8],center=true);
+			//LAR - Add 4 to the height.
+			cube([guide_height+5,guide_length,8],center=true);
 			}
 
 			// The fulcrum Hinge
