@@ -22,6 +22,12 @@
 // The beveled guide inside the idler was moved outward a little, because it's too tight
 // The cutout for the 20mm idler bolt (M8) was increased in radius to M8/2.
 
+// Changes made by Lynn A. Roth <lynnr@penguin.nu>
+// Change base length
+// Extend Guidler
+// Extend support around filament below the hobbed bolt.
+// Add mounting blocks for 2nd hot end.
+
 include<inc/configuration.scad>
 include<inc/functions.scad>
    
@@ -54,7 +60,7 @@ default_mounting_holes=mounting_holes_legacy;
 
 //translate([70,0,0])  i3_fanmount();
 wade(hotend_mount=default_extruder_mount,	mounting_holes=default_mounting_holes);
-translate([-35,10,0]) bearing_washer();
+//translate([-35,10,0]) bearing_washer();
 translate([-20,10,15.25]) rotate([0,-90,0]) wadeidler(); 
 
 
@@ -171,7 +177,7 @@ hole_for_608=23; // mrice
 
 block_top_right=[wade_block_width,wade_block_height];
 
-layer_thickness=0.35;
+layer_thickness=0.30;
 filament_diameter=3;
 filament_feed_hole_d=(filament_diameter*1.1)/cos(180/8);
 hobbing_depth=2;
@@ -217,6 +223,9 @@ idler_long_top=idler_mounting_hole_up+idler_mounting_hole_diameter/2+idler_mount
 idler_long_bottom=idler_fulcrum_offset;
 idler_long_side=idler_long_top+idler_long_bottom;
 
+extruder_mount_top_offset = [0,-10,0];
+extruder_mount_bottom_offset = [0,-20,0];
+
 module bearing_washer()
 {
 	difference()
@@ -246,12 +255,11 @@ module wade(
 				motor_mount_thickness]);
 
 			// Round the ends of the base
+			//LAR - only round one end.
 			translate([base_length-base_leadout,0,0])
 			cylinder(r=base_thickness/2,h=wade_block_depth+base_extra_depth,$fn=20);
-
-			translate([-base_leadout,0,0])
-			cylinder(r=base_thickness/2,h=wade_block_depth+base_extra_depth,$fn=20);
-
+			
+			
 			//Provide the bevel betweeen the base and the wade block.
 			render()
 			difference()
@@ -284,6 +292,41 @@ module wade(
 				}
 			}
 
+			//LAR - Second extruder mount top
+			translate(idler_fulcrum + extruder_mount_top_offset)
+			{
+				translate([idler_hinge_r,0,0])
+				cube([idler_hinge_r*2,idler_hinge_r*2,idler_short_side-2*idler_hinge_width-0.5],
+					center=true);
+				rotate(-30)
+				{
+					cylinder(r=idler_hinge_r,
+						h=idler_short_side-2*idler_hinge_width-0.5,
+						center=true,$fn=60);
+					translate([idler_hinge_r,0,0])
+					cube([idler_hinge_r*2,idler_hinge_r*2,
+						idler_short_side-2*idler_hinge_width-0.5],
+						center=true);
+				}
+			}
+			//LAR - Second extruder mount bottom
+			translate(idler_fulcrum + extruder_mount_bottom_offset)
+			{
+				translate([idler_hinge_r,0,0])
+				cube([idler_hinge_r*2,idler_hinge_r*2,idler_short_side-2*idler_hinge_width-0.5],
+					center=true);
+				rotate(-30)
+				{
+					cylinder(r=idler_hinge_r,
+						h=idler_short_side-2*idler_hinge_width-0.5,
+						center=true,$fn=60);
+					translate([idler_hinge_r,0,0])
+					cube([idler_hinge_r*2,idler_hinge_r*2,
+						idler_short_side-2*idler_hinge_width-0.5],
+						center=true);
+				}
+			}
+			
 
 
 			//The base.
@@ -368,11 +411,28 @@ echo("bhmh", mounting_holes)
 	}
 
 	// Idler fulcrum hole.
-	translate(idler_fulcrum+[0,0,0.4])
+	translate(idler_fulcrum+[0,0,layer_thickness])
 	cylinder(r=m3_diameter/2,h=idler_short_side-2*idler_hinge_width-0.5,center=true,$fn=16);
 
 	translate(idler_fulcrum+[0,0,idler_short_side/2-idler_hinge_width-1])
 	cylinder(r=m3_nut_diameter/2+0.25,h=1,$fn=40);
+	
+	
+	//LAR - Second extruder mount top hole
+	translate(idler_fulcrum+extruder_mount_top_offset+[0,0,layer_thickness])
+	cylinder(r=m3_diameter/2,h=idler_short_side-2*idler_hinge_width-0.5,center=true,$fn=16);
+
+	translate(idler_fulcrum+[0,0,idler_short_side/2-idler_hinge_width-1])
+	cylinder(r=m3_nut_diameter/2+0.25,h=1,$fn=40);
+	
+	//LAR - Second extruder mount bottom hole
+	translate(idler_fulcrum+extruder_mount_bottom_offset+[0,0,layer_thickness])
+	cylinder(r=m3_diameter/2,h=idler_short_side-2*idler_hinge_width-0.5,center=true,$fn=16);
+
+	translate(idler_fulcrum+[0,0,idler_short_side/2-idler_hinge_width-1])
+	cylinder(r=m3_nut_diameter/2+0.25,h=1,$fn=40);
+	
+	
 
 	//Rounded cutout for idler hinge.
 	render()
@@ -383,6 +443,21 @@ echo("bhmh", mounting_holes)
 		cylinder(r=idler_hinge_r+1,h=idler_short_side-2*idler_hinge_width-0.5,center=true);
 	}
 
+	//LAR - Rounded cutout for 2nd extruder mount
+	translate(idler_fulcrum + extruder_mount_top_offset)
+	difference()
+	{
+		cylinder(r=idler_hinge_r+0.5,h=idler_short_side+0.5,center=true,$fn=60);
+		cylinder(r=idler_hinge_r+1,h=idler_short_side-2*idler_hinge_width-0.5,center=true);
+	}
+	translate(idler_fulcrum + extruder_mount_bottom_offset)
+	difference()
+	{
+		cylinder(r=idler_hinge_r+0.5,h=idler_short_side+0.5,center=true,$fn=60);
+		cylinder(r=idler_hinge_r+1,h=idler_short_side-2*idler_hinge_width-0.5,center=true);
+	}
+	
+	
 	//translate(motor_mount_translation)
 	translate(large_wheel_translation)
 	{
@@ -983,7 +1058,7 @@ module i3_fanmount() {
 module fulcrum_support() {
       
       // The idler hinge support.
-			translate(idler_fulcrum)
+			#translate(idler_fulcrum)
 			{
 				rotate(-15)
 				translate([-(idler_hinge_r+3),-idler_hinge_r-2,-wade_block_depth/2])
