@@ -35,7 +35,7 @@ module bowden_extruder_holes(){
 
 module bowden_extruder()
 {
-	rotate([90,0,0]){
+	rotate([90,0,180]){
 		difference(){
 			bowden_extruder_base();
 			bowden_extruder_holes();
