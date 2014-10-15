@@ -30,7 +30,7 @@
 
 include<inc/configuration.scad>
 include<inc/functions.scad>
-   
+include<bowden_extruder.scad>   
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Define the hotend_mounting style you want by specifying hotend_mount=style1+style2 etc.
 //e.g. wade(hotend_mount=groovemount+peek_reprapsource_mount);
@@ -63,6 +63,8 @@ wade(hotend_mount=default_extruder_mount,	mounting_holes=default_mounting_holes)
 //translate([-35,10,0]) bearing_washer();
 translate([-20,10,15.25]) rotate([0,-90,0]) wadeidler(); 
 
+translate([-40,15,0]) 
+bowden_extruder();
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
