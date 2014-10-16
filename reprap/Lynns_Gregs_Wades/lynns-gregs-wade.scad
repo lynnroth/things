@@ -36,7 +36,6 @@ include<bowden_extruder.scad>
 //e.g. wade(hotend_mount=groovemount+peek_reprapsource_mount);
 
 jhead_mount=256;
-
 default_extruder_mount=256;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,16 +47,24 @@ default_mounting_holes=mounting_holes_legacy;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //translate([70,0,0])  i3_fanmount();
-wade(hotend_mount=default_extruder_mount,	mounting_holes=default_mounting_holes);
+//wade(hotend_mount=default_extruder_mount,	mounting_holes=default_mounting_holes);
 //translate([-35,10,0]) bearing_washer();
 //translate([-20,10,15.25]) rotate([0,-90,0]) wadeidler(); 
 
 //translate([-40,0,5]) 
-//bowden_extruder();
-
-#translate([-40,0,0])
+//rotate([ 0,-90,0])
+bowden_extruder();
+ 
+rotate([0,270,0])
+translate([20,0,-14])
+translate([-20,-10,0])
 	connector();
 
+	rotate([0,270,])
+	translate([20,0,-14])
+
+translate([-20,-20,0])
+	connector();
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  * Extruder
@@ -229,7 +236,8 @@ module bearing_washer()
 		cylinder(r=8,h=3); 
 	}
 }
-
+connector_r = m3_diameter/2+2.5;
+connector_length = (idler_height-2)+5;
 module connector()
 {	
    union()
@@ -238,57 +246,62 @@ module connector()
 		{
 			union()
 			{
-				// The fulcrum Hinge
+				// mount connector hinge
 				translate(idler_fulcrum)
-				rotate([0,0,-30])
+				rotate([0,0,0])
 				{
-					cylinder(h=idler_short_side,r=idler_hinge_r,center=true,$fn=60);
-					translate([-idler_end_length/2,0,0])
-					cube([idler_end_length,idler_hinge_r*2,idler_short_side],center=true);
+					cylinder(h=idler_short_side,r=connector_r,center=true,$fn=60);
+					translate([-connector_length/2,0,0])
+					cube([connector_length,connector_r*2,idler_short_side],center=true);
+					translate([-connector_length,0,0])
+					cylinder(h=idler_short_side,r=connector_r,center=true,$fn=60);
 				}
 			}
 
-		//Fulcrum hole.
-		translate(idler_fulcrum)
-		rotate(180/8)
-		cylinder(h=idler_short_side+2,r=m3_diameter/2-0.1,center=true,$fn=8);
+			//connector hole.
+			translate(idler_fulcrum)
+			rotate(180/8)
+			cylinder(h=idler_short_side+2,r=m3_diameter/2-0.1,center=true,$fn=8);
 
-		//Nut trap for fulcrum screw.
-		translate(idler_fulcrum+[0,0,idler_short_side/2-idler_hinge_width-1])
-		rotate(360/16)
-		cylinder(h=3,r=m3_nut_diameter/2+.5,$fn=6); // mrice
- 
-		for(idler_screw_hole=[-1,1])
-		translate(idler_axis+[2-idler_height,0,0])
-		{
-			//Screw Holes.
-			translate([-1,idler_mounting_hole_up,
-				idler_screw_hole*idler_mounting_hole_across])
-			rotate([0,90,0])
+			translate(idler_fulcrum + [-connector_length,0,0])
+			rotate(180/8)
+			cylinder(h=idler_short_side+2,r=m3_diameter/2-0.1,center=true,$fn=8);
+
+			
+			
+			//Nut trap for fulcrum screw.
+			translate(idler_fulcrum+[0,0,idler_short_side/2-idler_hinge_width-1])
+			rotate(360/16)
+			cylinder(h=3,r=m3_nut_diameter/2+.5,$fn=6); // mrice
+	 
+			translate(idler_fulcrum+[0,0,idler_short_side/2-idler_hinge_width-1] + [-connector_length,0,0])
+			rotate(360/16)
+			cylinder(h=3,r=m3_nut_diameter/2+.5,$fn=6); // mrice
+	 
+	 
+			//Slot for connector mount.
+			translate(idler_fulcrum + [-connector_length+1,0,0])
 			{
-				cylinder(r=idler_mounting_hole_diameter/2,h=idler_height+2,$fn=16);
-				translate([0,idler_mounting_hole_elongation,0])
-				cylinder(r=idler_mounting_hole_diameter/2,h=idler_height+2,$fn=16);
-				translate([-idler_mounting_hole_diameter/2,0,0])
-				cube([idler_mounting_hole_diameter,idler_mounting_hole_elongation,
-					idler_height+2]);
+				cylinder(h=idler_short_side-2*idler_hinge_width,
+					r=idler_hinge_r+0.5,center=true,$fn=60);
+				rotate(-90)
+				translate([0,-idler_hinge_r-0.5,0])
+				cube([idler_hinge_r*2+1,idler_hinge_r*2+1,
+					idler_short_side-2*idler_hinge_width],center=true);
 			}
 
-			// Rounded corners.
-			render()
-			translate([idler_height/2,idler_long_top,
-				idler_screw_hole*(idler_short_side/2)])
-			difference()
+			mirror([1,0,0])
+			translate(idler_fulcrum - [-connector_length+4,0,0])
 			{
-				translate([0,-idler_corners_radius/2+0.5,-idler_screw_hole*(idler_corners_radius/2-0.5)])
-				cube([idler_height+2,idler_corners_radius+1,idler_corners_radius+1],
-					center=true);
-				rotate([0,90,0])
-				translate([idler_screw_hole*idler_corners_radius,-idler_corners_radius,0])
-				cylinder(h=idler_height+4,r=idler_corners_radius,center=true,$fn=40);
+				cylinder(h=idler_short_side-2*idler_hinge_width,
+					r=idler_hinge_r+0.5,center=true,$fn=60);
+				rotate(-90)
+				translate([0,-idler_hinge_r-0.5,0])
+				cube([idler_hinge_r*2+1,idler_hinge_r*2+1,
+					idler_short_side-2*idler_hinge_width],center=true);
 			}
+			
 		}
-	}
 	}
 }
 

@@ -7,6 +7,24 @@ module bowden_extruder_base(){
 	translate([-22,0,0]) cube([44,22,18]); 
 }
 
+mount_length = 12.8;
+mount_height = 35;
+mount_width = 8;
+
+module mount()
+{
+	#translate([0,mount_height/2,-mount_width/2])
+	difference()
+	{
+		cube([mount_length,mount_height,mount_width], center=true);
+		#for(i = [-2:3])
+		{
+			translate([-mount_length/2-.5,-2+i*5,0])
+			rotate([0,90,0])
+			cylinder(h=mount_length+1, r=1.6, $fn=8);
+		}
+	}
+}
 module bowden_extruder_holes(){
 	rotate([90,0,0]){
 		// fijaciones para el J-Head
@@ -35,6 +53,7 @@ module bowden_extruder_holes(){
 
 module bowden_extruder()
 {
+	mount();
 	rotate([90,0,180]){
 		difference(){
 			bowden_extruder_base();
