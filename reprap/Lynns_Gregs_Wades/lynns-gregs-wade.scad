@@ -51,20 +51,21 @@ wade(hotend_mount=default_extruder_mount,	mounting_holes=default_mounting_holes)
 //translate([-35,10,0]) bearing_washer();
 translate([-20,10,15.25]) rotate([0,-90,0]) wadeidler(); 
 
+translate([-10,0,5])
+rotate([90,0,0])
 translate([-21,-5,15]) 
 rotate([ 0,-90,0])
 bowden_extruder();
  
-//rotate([0,270,0])
-//translate([20,0,-14])
-color("blue")
+ translate([-30,30,-20])//uncomment to print
+rotate([90,0,0])
 translate([-0,-10,0])
 	connector();
 
-//rotate([0,270,])
-//	translate([20,0,-14])
-color("blue")
-translate([-0,-20,0])
+	translate([-60,30,-0]) //uncomment to print
+rotate([90,0,0])
+translate([-0,-30,0])
+// translate([-0,-20,0])
 	connector();
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
