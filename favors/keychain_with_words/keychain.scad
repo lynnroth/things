@@ -8,14 +8,14 @@ words=["Pettisville", "Science", "Technology", "Engineering", "Mathematics"];
 wordCount=len(words);
 
 //rotatetext = 0; //for 6 words
- rotatetext = 15; //for 5 words
+rotatetext = 15; //for 5 words
 //rotatetext = 45; //for 4 words
 //rotatetext = 90; //for 3 words
 
 //Depth of the word
 namedepth = 2;
 
-//Height of ring
+//Height of main body of keyring
 height=60;
 
 //Radius - Outside Diameter
@@ -24,7 +24,6 @@ radius=10;
 //Thickness of wall
 wall=6;
 $fn=100;
-
 
 difference()
 {
