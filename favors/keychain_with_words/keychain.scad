@@ -1,16 +1,12 @@
-use<write.scad>;
-
-//Set The name to the word you want engraved on the ring
-
+//Set the words array to the words you want engraved.  One per side.
 words=["Pettisville", "Science", "Technology", "Engineering", "Mathematics"];
 
 //Set wordCount to the number of times the word should be printed.
 wordCount=len(words);
 
-//rotatetext = 0; //for 6 words
-rotatetext = 15; //for 5 words
-//rotatetext = 45; //for 4 words
-//rotatetext = 90; //for 3 words
+//We need to rotate the text different amount depending on the number of sides.
+rotatetextarray = [0,0,0,60,45,36.5,30];
+rotatetext = rotatetextarray[wordCount];
 
 //Depth of the word
 namedepth = 2.5;
@@ -53,10 +49,9 @@ difference()
 		{
 			//Rotate 360/wordCount for each iteration
 			rotate([0,0,-z * 360 / wordCount])
-				//writecylinder(words[z],[0,0,0],radius-2,t=namedepth, h=7, rounded=1, rotate=90);
-				translate([radius-namedepth,2,0])rotate([0,90,36.5])
-                                linear_extrude(height=namedepth)
-                                    text(text=words[z], size=7, halign="center");
+				translate([radius-namedepth,2,0])rotate([0,90,rotatetext])
+					linear_extrude(height=namedepth)
+						text(text=words[z], size=7, halign="center");
 		}	
 	
 	//Remove Center
