@@ -46,27 +46,27 @@ default_mounting_holes=mounting_holes_legacy;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-translate([70,0,0])  i3_fanmount();
-wade(hotend_mount=default_extruder_mount,	mounting_holes=default_mounting_holes);
-//translate([-35,10,0]) bearing_washer();
+// translate([70,0,0])  i3_fanmount();
+ wade(hotend_mount=default_extruder_mount,	mounting_holes=default_mounting_holes);
+// //translate([-35,10,0]) bearing_washer();
 translate([-20,10,15.25]) rotate([0,-90,0]) wadeidler(); 
 
-translate([-10,0,5])
-rotate([90,0,0])
+translate([-10,0,5])//uncomment to print
+rotate([90,0,0])//uncomment to print
 translate([-21,-5,15]) 
 rotate([ 0,-90,0])
 bowden_extruder();
  
- translate([-30,30,-20])//uncomment to print
-rotate([90,0,0])
+translate([-30,30,-20])//uncomment to print
+rotate([90,0,0])//uncomment to print
 translate([-0,-10,0])
 	connector();
 
-	translate([-60,30,-0]) //uncomment to print
-rotate([90,0,0])
-translate([-0,-30,0])
-// translate([-0,-20,0])
-	connector();
+// translate([-60,30,-0]) //uncomment to print
+// rotate([90,0,0])//uncomment to print
+// translate([-0,-30,0])
+// // translate([-0,-20,0])
+	// connector();
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  * Extruder
