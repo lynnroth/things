@@ -1,0 +1,86 @@
+solid OpenSCAD_Model
+  facet normal nan -inf inf
+    outer loop
+      vertex 1.35477e-316 0 0
+      vertex 1800 9.88131e-324 4.24399e-314
+      vertex 6.91692e-323 2.96439e-323 1.4822e-322
+    endloop
+  endfacet
+  facet normal nan -inf inf
+    outer loop
+      vertex 1.35477e-316 0 0
+      vertex 1800 9.88131e-324 4.24399e-314
+      vertex 6.91692e-323 2.96439e-323 1.4822e-322
+    endloop
+  endfacet
+  facet normal nan inf -inf
+    outer loop
+      vertex 1.35477e-316 0 0
+      vertex -1800 9.88131e-324 4.24399e-314
+      vertex 6.91692e-323 2.96439e-323 1.4822e-322
+    endloop
+  endfacet
+  facet normal nan inf -inf
+    outer loop
+      vertex 1.35477e-316 0 0
+      vertex -1800 9.88131e-324 4.24399e-314
+      vertex 6.91692e-323 2.96439e-323 1.4822e-322
+    endloop
+  endfacet
+  facet normal -inf inf nan
+    outer loop
+      vertex 1.35477e-316 0 -1800
+      vertex 0 9.88131e-324 4.24399e-314
+      vertex 6.91692e-323 2.96439e-323 1.4822e-322
+    endloop
+  endfacet
+  facet normal -inf inf nan
+    outer loop
+      vertex 1.35477e-316 0 -1800
+      vertex 0 9.88131e-324 4.24399e-314
+      vertex 6.91692e-323 2.96439e-323 1.4822e-322
+    endloop
+  endfacet
+  facet normal inf nan inf
+    outer loop
+      vertex 1.35477e-316 1800 0
+      vertex 0 9.88131e-324 4.24399e-314
+      vertex 6.91692e-323 2.96439e-323 1.4822e-322
+    endloop
+  endfacet
+  facet normal inf nan inf
+    outer loop
+      vertex 1.35477e-316 1800 0
+      vertex 0 9.88131e-324 4.24399e-314
+      vertex 6.91692e-323 2.96439e-323 1.4822e-322
+    endloop
+  endfacet
+  facet normal inf -inf nan
+    outer loop
+      vertex 1.35477e-316 0 1800
+      vertex 0 9.88131e-324 4.24399e-314
+      vertex 6.91692e-323 2.96439e-323 1.4822e-322
+    endloop
+  endfacet
+  facet normal inf -inf nan
+    outer loop
+      vertex 1.35477e-316 0 1800
+      vertex 0 9.88131e-324 4.24399e-314
+      vertex 6.91692e-323 2.96439e-323 1.4822e-322
+    endloop
+  endfacet
+  facet normal -inf nan -inf
+    outer loop
+      vertex 1.35477e-316 -1800 0
+      vertex 0 9.88131e-324 4.24399e-314
+      vertex 6.91692e-323 2.96439e-323 1.4822e-322
+    endloop
+  endfacet
+  facet normal -inf nan -inf
+    outer loop
+      vertex 1.35477e-316 -1800 0
+      vertex 0 9.88131e-324 4.24399e-314
+      vertex 6.91692e-323 2.96439e-323 1.4822e-322
+    endloop
+  endfacet
+endsolid OpenSCAD_Model

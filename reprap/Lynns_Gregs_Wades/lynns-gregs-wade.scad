@@ -30,7 +30,7 @@
 
 include<inc/configuration.scad>
 include<inc/functions.scad>
-include<bowden_extruder.scad>   
+include<bowden_extruder.scad>    
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Define the hotend_mounting style you want by specifying hotend_mount=style1+style2 etc.
 //e.g. wade(hotend_mount=groovemount+peek_reprapsource_mount);
@@ -47,25 +47,35 @@ default_mounting_holes=mounting_holes_legacy;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // translate([70,0,0])  i3_fanmount();
- wade(hotend_mount=default_extruder_mount,	mounting_holes=default_mounting_holes);
+//wade(hotend_mount=default_extruder_mount,	mounting_holes=default_mounting_holes);
 // //translate([-35,10,0]) bearing_washer();
-translate([-20,10,15.25]) rotate([0,-90,0]) wadeidler(); 
+//translate([-20,10,15.25]) rotate([0,-90,0]) wadeidler(); 
 
-translate([-10,0,5])//uncomment to print
-rotate([90,0,0])//uncomment to print
-translate([-21,-5,15]) 
-rotate([ 0,-90,0])
-bowden_extruder();
+  // translate([-10,0,5])//uncomment to print
+  // rotate([90,0,0])//uncomment to print
+  // translate([-21,-5,15]) 
+  // rotate([ 0,-90,0])
+  // bowden_extruder();
  
-translate([-30,30,-20])//uncomment to print
-rotate([90,0,0])//uncomment to print
-translate([-0,-10,0])
-	connector();
+ bowden_adapter(); 
+  
 
-// translate([-60,30,-0]) //uncomment to print
-// rotate([90,0,0])//uncomment to print
-// translate([-0,-30,0])
-// // translate([-0,-20,0])
+ 
+ // translate([-30,30,-20])//uncomment to print
+ // rotate([90,0,0])//uncomment to print
+ // translate([-0,-10,0])
+	 //connector();
+
+// translate([30,0,0])
+// connector_half(1);
+
+// translate([20,0,0])
+// connector_half(0);
+
+ // translate([-60,30,-0]) //uncomment to print
+ // rotate([90,0,0])//uncomment to print
+ // translate([-0,-30,0])
+ // translate([-0,-20,0])
 	// connector();
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
@@ -239,7 +249,46 @@ module bearing_washer()
 	}
 }
 connector_r = m3_diameter/2+2.5;
-connector_length = (idler_height-2)+1.5;
+connector_length = 20;
+connector_hinge_r = m3_diameter/2+3.5;
+
+connector_thickness = 5;
+
+
+module connector_half(nuttrap=0)
+{	
+	difference()
+	{
+		union()
+		{
+			cube([connector_r,connector_length,connector_thickness]);
+			translate([connector_r,0,0])
+			{
+				cylinder(r=connector_r, h=connector_thickness);
+				translate([0,connector_length,0])
+				cylinder(r=connector_r, h=connector_thickness);
+			}
+		}
+		translate([connector_r,0,-.1])
+		{
+			cylinder(r=m3_diameter/2,h=connector_thickness + .2, $fn=20);
+			if (nuttrap == 1)
+			{
+				translate([0,0,connector_thickness-2])
+					cylinder(h=3,r=m3_nut_diameter/2+.5,$fn=6);
+				translate([0,connector_length,connector_thickness-2])
+					cylinder(h=3,r=m3_nut_diameter/2+.5,$fn=6);
+			}
+			
+			translate([0,connector_length,0])
+			cylinder(r=m3_diameter/2,h=connector_thickness + .2, $fn=20);
+			
+		}
+	}
+
+}
+
+
 module connector()
 {	
    union()
@@ -283,29 +332,31 @@ module connector()
 	 
 			//Slot for connector mount.
 			translate(idler_fulcrum + [-connector_length+1,0,0])
+			translate(idler_fulcrum + [-connector_length+1,0,0])
 			{
 				cylinder(h=idler_short_side-2*idler_hinge_width,
-					r=idler_hinge_r+0.5,center=true,$fn=60);
+					r=connector_hinge_r+0.5,center=true,$fn=60);
 				rotate(-90)
-				translate([0,-idler_hinge_r-0.5,0])
-				cube([idler_hinge_r*2+1,idler_hinge_r*2+1,
+				translate([0,-connector_hinge_r-0.5,0])
+				cube([connector_hinge_r*2+1,connector_hinge_r*2+1,
 					idler_short_side-2*idler_hinge_width],center=true);
 			}
 
 			mirror([1,0,0])
-			translate(idler_fulcrum - [-connector_length+4,0,0])
+			translate(idler_fulcrum - [-connector_length+5,0,0])
 			{
 				cylinder(h=idler_short_side-2*idler_hinge_width,
-					r=idler_hinge_r+0.5,center=true,$fn=60);
+					r=connector_hinge_r+0.5,center=true,$fn=60);
 				rotate(-90)
-				translate([0,-idler_hinge_r-0.5,0])
-				cube([idler_hinge_r*2+1,idler_hinge_r*2+1,
+				translate([0,-connector_hinge_r-0.5,0])
+				cube([connector_hinge_r*2+1,connector_hinge_r*2+1,
 					idler_short_side-2*idler_hinge_width],center=true);
 			}
 			
 		}
 	}
 }
+
 
 
 
@@ -451,17 +502,18 @@ echo("bhmh", mounting_holes)
 
 	//carriage mounting holes
 	//LAR - Adjusted to 24mm mount (-25 and 1)
-	translate([-48.5+64+4,1,3]) {
+	translate([-48.5+64+4,1,3]) 
+	{
 		translate([-25,0,0]) { //-46
 			translate([0,0,layer_thickness+24]) 
 			  cylinder(r=m3_diameter/2, h=wade_block_depth+0.2+base_extra_depth, center=true,$fn=20);
-			cylinder(r=m3_nut_diameter/2+0.5, h=20, center=true,$fn=20);
+			  cylinder(r=m3_nut_diameter/2+0.5, h=20, center=true,$fn=20);
 		}
 		
-		translate([1,0,0]) { //-22
+	#	translate([1,0,0]) { //-22
 			translate([0,0,layer_thickness+24]) 
 			  cylinder(r=m3_diameter/2, h=wade_block_depth+0.2+base_extra_depth, center=true,$fn=20);
-			cylinder(r=m3_nut_diameter/2+0.5, h=20, center=true,$fn=20);
+			  cylinder(r=m3_nut_diameter/2+0.5, h=20, center=true,$fn=20);
 		}
 	}
 
@@ -841,7 +893,8 @@ function rotated(a)=[cos(a),sin(a),0];
 module wildseyed_mount_holes(insulator_d=12.7)  
 {  
 	extruder_recess_d=insulator_d+0.7;
-	extruder_recess_h=10;
+	//LAR - Change depth to 12 from 10 for Prometheus Hot end.
+	extruder_recess_h=12;
     hotend_nut_trap_depth = 3.5; // mrice
 
 	// Recess in base
