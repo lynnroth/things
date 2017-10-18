@@ -1,6 +1,7 @@
+/*
 The MIT License (MIT)
 
-Copyright (c) 2014 Lynn A. Roth
+Copyright (c) 2017 Lynn A. Roth
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -19,11 +20,11 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
+*/
 
 
 //Set the words array to the words you want engraved.  One per side.
-words=["Pettisville", "Science", "Technology", "Engineering", "Mathematics"];
+words=["Pettisville", "Science", "Technology", "Engineering", "Art", "Mathematics"];
 
 //Set wordCount to the number of times the word should be printed.
 wordCount=len(words);
